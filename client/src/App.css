@@ -27,6 +27,11 @@
     margin-left: 25%;
 }
 
+.login{
+    margin-left: 30%;
+    margin-top: 100px;
+}
+
 .inputBox{
     display: block;
     margin: 25px;

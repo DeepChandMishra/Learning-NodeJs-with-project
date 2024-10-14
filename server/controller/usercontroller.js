@@ -20,20 +20,24 @@ exports.signUp= async(req,res)=>{
 exports.login= async(req,res)=>{
     const {email,password}=req.body;
     try {
+        // if(!email || !password){
+        //     return res.status(400).json({
+        //         error: "Email and password  required !"
+        //     })
+        // }
         const user= await Users.findOne({where:{email}})
         if(!user) {
             return res.status(404).json({error:'user not found'})
         }
 
-        const isMatch=bcrypt.compare(password,user.password)
+        const isMatch= await bcrypt.compare(password, user.password)
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
-
-        const token=jwt.sign({id: user.id},secretKey,{expiresIn:"1hr"})
+        const token =  jwt.sign({id: user.id},secretKey,{expiresIn:"1hr"})
         res.json({ message: 'Login successful', token });
     } catch (error) {
-        res.status(500).json({ error: 'Login failed' });
+        res.status(500).json({ error });
     }
 }
 
